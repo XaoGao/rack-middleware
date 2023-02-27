@@ -2,4 +2,4 @@
 
 source "https://rubygems.org"
 
-# gem "rails"
+gem 'rack', '~> 3.0', '>= 3.0.4.1'
