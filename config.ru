@@ -4,4 +4,4 @@ Bundler.require
 
 require "./lib/rack_middleware"
 
-run RackMiddlware::Application.new
+run RackMiddleware::Application.new

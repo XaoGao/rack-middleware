@@ -1,4 +1,4 @@
-require "rack/test"
+require_relative "./support/rack_test_support"
 require_relative "../lib/rack_middleware"
 
 RSpec.configure do |config|
@@ -11,6 +11,4 @@ RSpec.configure do |config|
   end
 
   config.shared_context_metadata_behavior = :apply_to_host_groups
-
-  config.include Rack::Test::Methods
 end
