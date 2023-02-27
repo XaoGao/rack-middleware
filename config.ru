@@ -2,6 +2,6 @@ require "rubygems"
 require "bundler"
 Bundler.require
 
-require "./lib/application"
+require "./lib/rack_middleware"
 
-run Application.new
+run RackMiddlware::Application.new
