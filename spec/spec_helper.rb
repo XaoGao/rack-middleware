@@ -1,5 +1,5 @@
 require_relative "./support/rack_test_support"
-require_relative "../lib/rack_middleware"
+require_relative "../lib/course"
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

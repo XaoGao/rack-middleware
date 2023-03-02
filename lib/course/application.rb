@@ -1,4 +1,4 @@
-module RackMiddleware
+module Course
   class Application
     # rubocop:disable Lint/UnusedMethodArgument
     def call(env)

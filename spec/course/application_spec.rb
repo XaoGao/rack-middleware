@@ -1,4 +1,4 @@
-RSpec.describe RackMiddleware::Application do
+RSpec.describe Course::Application do
   let(:app) { described_class.new }
 
   context "when request to root path" do
