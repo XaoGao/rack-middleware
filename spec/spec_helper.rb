@@ -1,3 +1,6 @@
+require "simplecov"
+SimpleCov.start
+
 require_relative "./support/rack_test_support"
 require_relative "../lib/course"
 
