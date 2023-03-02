@@ -6,3 +6,8 @@ services:
     ports: 
       - 9292:9292
     network_mode: host
+    volumes:    
+      - ./bundle:/opt/bundle
+
+volumes:
+    rack:
