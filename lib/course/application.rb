@@ -1,9 +1,7 @@
 module Course
   class Application
-    # rubocop:disable Lint/UnusedMethodArgument
-    def call(env)
+    def call(_)
       [200, {}, ["Hello, World!"]]
     end
-    # rubocop:enable Lint/UnusedMethodArgument
   end
 end
