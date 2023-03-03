@@ -11,6 +11,7 @@ gem "rack", "~> 3.0", ">= 3.0.4.1"
 gem "rackup", "~> 2.1"
 
 group :development do
+  gem "debug", "~> 1.7", ">= 1.7.1"
   gem "rspec", "~> 3.12"
   gem "rubocop", "~> 1.39", require: false
   gem "rubocop-performance", "~> 1.11", require: false
