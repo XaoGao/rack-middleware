@@ -1,4 +1,4 @@
-RSpec.describe Course::Middleware::PublicMiddleware do
+RSpec.describe Course::Middleware::AssetsMiddleware do
   subject(:middleware) { described_class.new(app) }
 
   # rubocop:disable RSpec/VerifiedDoubles

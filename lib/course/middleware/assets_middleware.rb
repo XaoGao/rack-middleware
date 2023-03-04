@@ -1,6 +1,6 @@
 module Course
   module Middleware
-    class PublicMiddleware
+    class AssetsMiddleware
       attr_reader :app
 
       REQUEST_METHOD_GET = "GET".freeze
@@ -49,7 +49,7 @@ module Course
 
       def full_path(env)
         file_name = env["REQUEST_PATH"].sub(PUBLIC_URL, "")
-        File.join(File.dirname(__FILE__), "..", "..", "public", file_name)
+        File.join(File.dirname(__FILE__), "..", "..", "public", "assets", file_name)
       end
     end
   end
