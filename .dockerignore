@@ -1,0 +1,7 @@
+.bundle
+.env
+.env.*
+.git
+.gitattributes
+.gitignore
+.github
