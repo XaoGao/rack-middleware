@@ -4,7 +4,7 @@ Bundler.require
 
 require "./lib/course"
 
-# Handle the request to public pages
+use Course::Middleware::LoggerMiddleware
 use Course::Middleware::ExceptionsMiddleware
 use Course::Middleware::AssetsMiddleware
 use Course::Middleware::UnsuccessMiddleware
