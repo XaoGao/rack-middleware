@@ -11,9 +11,16 @@ module Course
         app.call(env)
       # rubocop:disable Lint/RescueException
       rescue Exception
-        [500, { "content-type" => "text/plain" }, ["unexpected error, try again"]]
+        type = content_type_request_or_default(env)
+        [500, { "content-type" => type }, ["unexpected error, try again"]]
       end
       # rubocop:enable Lint/RescueException
+
+      private
+
+      def content_type_request_or_default(env)
+        env["CONTENT_TYPE"] || "text/plain"
+      end
     end
   end
 end

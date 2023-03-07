@@ -21,6 +21,16 @@ module Course
 
           it { expect(response).to eq([500, { "content-type" => "text/plain" }, ["unexpected error, try again"]]) }
         end
+
+        context "when app raise exception with content type" do
+          before do
+            allow(app).to receive(:call).and_raise(StandardError)
+          end
+
+          let(:env) { { "REQUEST_METHOD" => "GET", "REQUEST_PATH" => "/", "CONTENT_TYPE" => "application/xml" } }
+
+          it { expect(response).to eq([500, { "content-type" => "application/xml" }, ["unexpected error, try again"]]) }
+        end
       end
     end
   end
