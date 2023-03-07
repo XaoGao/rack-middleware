@@ -1,6 +1,6 @@
 module Course
   module Middleware
-    class ExceptionsMiddleware
+    class Exceptions
       attr_reader :app
 
       def initialize(app)
@@ -8,11 +8,13 @@ module Course
       end
 
       def call(env)
-        status, headers, body = app.call(env)
-        [status, headers, body]
-      rescue StandardError => _e
+        # debugger
+        app.call(env)
+      # rubocop:disable Lint/RescueException
+      rescue Exception
         [500, { "content-type" => "text/plain" }, ["unexpected error, try again"]]
       end
+      # rubocop:enable Lint/RescueException
     end
   end
 end

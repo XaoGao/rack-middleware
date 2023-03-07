@@ -4,6 +4,7 @@ source "https://rubygems.org"
 
 ruby "3.1.2"
 
+gem "dry-configurable"
 gem "json", "~> 2.3"
 gem "oj", "~> 3.14", ">= 3.14.2"
 gem "puma", "~> 6.1", ">= 6.1.1"

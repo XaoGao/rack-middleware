@@ -4,9 +4,9 @@ Bundler.require
 
 require "./lib/course"
 
-use Course::Middleware::LoggerMiddleware
-use Course::Middleware::ExceptionsMiddleware
-use Course::Middleware::AssetsMiddleware
-use Course::Middleware::UnsuccessMiddleware
+use Course::Middleware::Logger, logger: Course.config.logger
+use Course::Middleware::Exceptions
+use Course::Middleware::Assets
+use Course::Middleware::Unsuccess
 
 run Course::Application.new

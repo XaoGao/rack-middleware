@@ -1,7 +1,10 @@
 module Course
   module Middleware
-    class UnsuccessMiddleware
+    class Unsuccess
       attr_reader :app
+
+      NOT_FOUND_STATUS = 404
+      INTERNAL_ERROR = 500
 
       def initialize(app)
         @app = app
@@ -9,7 +12,7 @@ module Course
 
       def call(env)
         status, headers, body = @app.call(env)
-        if [404, 500].include? status
+        if handled_status?(status)
           body = public_page(status)
           headers = { "content-type" => "text/html" }
         end
@@ -19,8 +22,12 @@ module Course
 
       private
 
+      def handled_status?(status)
+        [NOT_FOUND_STATUS, INTERNAL_ERROR].include? status
+      end
+
       def public_page(status)
-        File.read(File.join(File.dirname(__FILE__), "..", "..", "public", "#{status}.html"))
+        File.read(File.join(Course.config.root, "public", "#{status}.html"))
       end
     end
   end

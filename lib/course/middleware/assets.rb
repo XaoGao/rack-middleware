@@ -1,6 +1,6 @@
 module Course
   module Middleware
-    class AssetsMiddleware
+    class Assets
       attr_reader :app
 
       REQUEST_METHOD_GET = "GET".freeze
@@ -12,12 +12,10 @@ module Course
 
       def call(env)
         if get?(env) && public_url?(env)
-          status, headers, body = handle_public_request(env)
+          handle_public_request(env)
         else
-          status, headers, body = app.call(env)
+          app.call(env)
         end
-
-        [status, headers, body]
       end
 
       private
@@ -31,8 +29,9 @@ module Course
       end
 
       def handle_public_request(env)
-        body = read_file(env)
+        return [404, { "content-type" => "text/plain" }, ["Source not found"]] if danger_path?(env)
 
+        body = read_file(env)
         status = body == "Source not found" ? 404 : 200
         # TODO: add factory to generate contetnt-type
         [status, { "content-type" => "text/plain" }, [body]]
@@ -49,7 +48,11 @@ module Course
 
       def full_path(env)
         file_name = env["REQUEST_PATH"].sub(PUBLIC_URL, "")
-        File.join(File.dirname(__FILE__), "..", "..", "public", "assets", file_name)
+        File.join(Course.config.root, "public", "assets", file_name)
+      end
+
+      def danger_path?(env)
+        env["REQUEST_PATH"].sub(PUBLIC_URL, "").include?("../")
       end
     end
   end
