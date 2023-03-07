@@ -8,7 +8,6 @@ module Course
       end
 
       def call(env)
-        # debugger
         app.call(env)
       # rubocop:disable Lint/RescueException
       rescue Exception
