@@ -2,6 +2,7 @@ require "debug"
 require "logger"
 require "dry-configurable"
 
+require_relative "./course/statuses"
 require_relative "./course/application"
 require_relative "./course/middleware/assets"
 require_relative "./course/middleware/exceptions"

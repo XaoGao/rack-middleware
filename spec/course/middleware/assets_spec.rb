@@ -11,7 +11,7 @@ module Course
 
       describe ".call" do
         context "when request is not handle middleware" do
-          it { expect(response).to eq([200, {}, ["Hello, World!"]]) }
+          it { expect(response).to eq([Statuses::SUCSSESS, {}, ["Hello, World!"]]) }
         end
 
         context "when request is handle middleware" do
@@ -20,20 +20,20 @@ module Course
             File.read(File.join(Course.config.root, "public", "assets", "xml_file.xml"))
           end
 
-          it { expect(response[0]).to eq(200) }
+          it { expect(response[0]).to eq(Statuses::SUCSSESS) }
           it { expect(response[2].first).to eq(body) }
         end
 
         context "when source is not found" do
           let(:env) { { "REQUEST_METHOD" => "GET", "REQUEST_PATH" => "/public/frong_file.xml" } }
 
-          it { expect(response).to eq([404, { "content-type" => "text/plain" }, ["Source not found"]]) }
+          it { expect(response).to eq([Statuses::NOT_FOUND, { "content-type" => "text/plain" }, [""]]) }
         end
 
         context "when path traversal" do
           let(:env) { { "REQUEST_METHOD" => "GET", "REQUEST_PATH" => "/public/../../../docker-compose.yml" } }
 
-          it { expect(response).to eq([404, { "content-type" => "text/plain" }, ["Source not found"]]) }
+          it { expect(response).to eq([Statuses::NOT_FOUND, { "content-type" => "text/plain" }, [""]]) }
         end
       end
     end

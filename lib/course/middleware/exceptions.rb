@@ -10,16 +10,21 @@ module Course
       def call(env)
         app.call(env)
       # rubocop:disable Lint/RescueException
-      rescue Exception
+      rescue Exception => e
+        unless env["logger"].nil?
+          env["logger"].error e.message
+          env["logger"].error e.backtrace
+        end
+
         type = content_type_request_or_default(env)
-        [500, { "content-type" => type }, ["unexpected error, try again"]]
+        [Statuses::INTERNAL_ERROR, { "content-type" => type }, [""]]
       end
       # rubocop:enable Lint/RescueException
 
       private
 
       def content_type_request_or_default(env)
-        env["CONTENT_TYPE"] || "text/plain"
+        env["CONTENT_TYPE"] || "text/html"
       end
     end
   end

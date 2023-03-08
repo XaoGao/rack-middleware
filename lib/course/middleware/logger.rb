@@ -13,6 +13,7 @@ module Course
       end
 
       def call(env)
+        env["logger"] = logger
         logger.info("#{env['REQUEST_METHOD']} #{env['REQUEST_URI']}")
         app.call(env)
       end

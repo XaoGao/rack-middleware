@@ -29,10 +29,12 @@ module Course
       end
 
       def handle_public_request(env)
-        return [404, { "content-type" => "text/plain" }, ["Source not found"]] if danger_path?(env)
+        if danger_path?(env)
+          return [Statuses::NOT_FOUND, { "content-type" => (env["CONTENT_TYPE"] || "text/plain") }, [""]]
+        end
 
         body = read_file(env)
-        status = body == "Source not found" ? 404 : 200
+        status = body == "" ? Statuses::NOT_FOUND : Statuses::SUCSSESS
         # TODO: add factory to generate contetnt-type
         [status, { "content-type" => "text/plain" }, [body]]
       end
@@ -42,7 +44,7 @@ module Course
         if File.file?(full_path_to_file)
           File.read(full_path_to_file)
         else
-          "Source not found"
+          ""
         end
       end
 
