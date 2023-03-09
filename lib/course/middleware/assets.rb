@@ -6,9 +6,9 @@ module Course
       REQUEST_METHOD_GET = "GET".freeze
       PUBLIC_URL = "/public".freeze
 
-      def initialize(app, assets_path = Course.config.assets_path)
+      def initialize(app, path_to_assets: Course.config.assets_path)
         @app = app
-        @assets_path = assets_path
+        @assets_path = path_to_assets
       end
 
       def call(env)
