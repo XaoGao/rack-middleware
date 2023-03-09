@@ -5,7 +5,7 @@ Bundler.require
 require "./lib/course"
 
 use Course::Middleware::Logger, logger: Course.config.logger
-use Course::Middleware::Assets
+use Course::Middleware::Assets, path_to_assets: Course.config.assets_path
 use Course::Middleware::Unsuccess
 use Course::Middleware::Exceptions
 

@@ -13,6 +13,8 @@ module Course
   extend Dry::Configurable
 
   setting :root, default: File.join(File.dirname(__FILE__), "..")
+  setting :public_path, default: File.join(Course.config.root, "public")
+  setting :assets_path, default: File.join(Course.config.root, "public", "assets")
 
   setting :logger, default: Logger.new($stdout)
 end

@@ -1,10 +1,11 @@
 module Course
   module Middleware
     class Unsuccess
-      attr_reader :app
+      attr_reader :app, :public_path
 
-      def initialize(app)
+      def initialize(app, public_path = Course.config.public_path)
         @app = app
+        @public_path = public_path
       end
 
       def call(env)
@@ -24,7 +25,7 @@ module Course
       end
 
       def public_page(status)
-        [File.read(File.join(Course.config.root, "public", "#{status}.html"))]
+        [File.read(File.join(public_path, "#{status}.html"))]
       end
     end
   end

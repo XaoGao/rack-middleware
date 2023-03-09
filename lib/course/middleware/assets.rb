@@ -1,13 +1,14 @@
 module Course
   module Middleware
     class Assets
-      attr_reader :app
+      attr_reader :app, :assets_path
 
       REQUEST_METHOD_GET = "GET".freeze
       PUBLIC_URL = "/public".freeze
 
-      def initialize(app)
+      def initialize(app, assets_path = Course.config.assets_path)
         @app = app
+        @assets_path = assets_path
       end
 
       def call(env)
@@ -50,7 +51,7 @@ module Course
 
       def full_path(env)
         file_name = env["REQUEST_PATH"].sub(PUBLIC_URL, "")
-        File.join(Course.config.root, "public", "assets", file_name)
+        File.join(assets_path, file_name)
       end
 
       def danger_path?(env)
