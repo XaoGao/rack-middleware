@@ -1,10 +1,12 @@
 require "debug"
 require "logger"
 require "dry-configurable"
+require "digest"
 
 require_relative "./course/statuses"
 require_relative "./course/application"
 require_relative "./course/middleware/assets"
+require_relative "./course/middleware/etag"
 require_relative "./course/middleware/exceptions"
 require_relative "./course/middleware/unsuccess"
 require_relative "./course/middleware/logger"

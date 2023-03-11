@@ -5,6 +5,7 @@ module Course
 
       REQUEST_METHOD_GET = "GET".freeze
       PUBLIC_URL = "/public".freeze
+      MAX_CACHE_AGE = 31_536_000
 
       def initialize(app, path_to_assets: Course.config.assets_path)
         @app = app
@@ -36,8 +37,7 @@ module Course
 
         body = read_file(env)
         status = body == "" ? Statuses::NOT_FOUND : Statuses::SUCSSESS
-        # TODO: add factory to generate contetnt-type
-        [status, { "content-type" => "text/plain" }, [body]]
+        [status, headers(env), [body]]
       end
 
       def read_file(env)
@@ -56,6 +56,15 @@ module Course
 
       def danger_path?(env)
         env["REQUEST_PATH"].sub(PUBLIC_URL, "").include?("../")
+      end
+
+      def headers(env)
+        header = {}
+        header["content-type"] = env["CONTENT_TYPE"] || "text/plain"
+        header["cache-control"] = "public, max-age=#{MAX_CACHE_AGE}"
+        header["expires"] = (Time.now + MAX_CACHE_AGE).utc.rfc2822
+
+        header
       end
     end
   end
