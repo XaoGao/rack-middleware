@@ -21,7 +21,7 @@ module Course
       private
 
       def success_status?(status)
-        status == 200
+        status == Statuses::SUCSSESS
       end
 
       def cache?(headers)
