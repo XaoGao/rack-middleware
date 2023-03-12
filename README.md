@@ -17,6 +17,9 @@ http://localhost:9292/public/xml_file.xml
 ## Lesson 3
 Add to rack application cache-control(only for assets) and etag middleware
 
+## Lesson 4
+Create simple dsl for routing, methods get, post and mount to another rack app
+
 ## Run
 1. Ensure docker and docker compose is alredy installed in a computer.
 2. Run in termianl command
