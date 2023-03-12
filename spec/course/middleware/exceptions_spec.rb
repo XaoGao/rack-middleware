@@ -4,14 +4,14 @@ module Course
       subject(:middleware) { described_class.new(app) }
 
       # rubocop:disable RSpec/VerifiedDoubles
-      let(:app) { double(call: [Statuses::SUCSSESS, {}, ["Hello, World!"]]) }
+      let(:app) { double(call: [Statuses::SUCCESS, {}, ["Hello, World!"]]) }
       # rubocop:enable RSpec/VerifiedDoubles
       let(:env) { { "REQUEST_METHOD" => "GET", "REQUEST_PATH" => "/" } }
       let(:response) { middleware.call(env) }
 
       describe ".call" do
         context "when request is not handle middleware" do
-          it { expect(response).to eq([Statuses::SUCSSESS, {}, ["Hello, World!"]]) }
+          it { expect(response).to eq([Statuses::SUCCESS, {}, ["Hello, World!"]]) }
         end
 
         context "when app raise exception" do
