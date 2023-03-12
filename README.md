@@ -14,6 +14,9 @@ Example request:
 http://localhost:9292/public/xml_file.xml
 ```
 
+## Lesson 3
+Add to rack application cache-control(only for assets) and etag middleware
+
 ## Run
 1. Ensure docker and docker compose is alredy installed in a computer.
 2. Run in termianl command

@@ -33,10 +33,8 @@ module Course
         headers.include? "cache-control"
       end
 
-      # body is an array
       def digest_body(body)
-        body.filter { |item| !item.empty? }
-            .reduce("") { |res, item| res + Digest::MD5.hexdigest(item) }
+        Digest::MD5.hexdigest(body.compact.to_s)
       end
     end
   end
