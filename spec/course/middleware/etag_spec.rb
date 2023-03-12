@@ -13,7 +13,7 @@ module Course
 
       describe ".call" do
         context "when response is not handle middleware" do
-          it { expect(response).to eq([Statuses::SUCSSESS, {}, ["Hello, World!"]]) }
+          it { expect(response).to eq([Statuses::SUCCESS, {}, ["Hello, World!"]]) }
         end
 
         context "when response have cache header" do

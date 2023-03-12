@@ -11,7 +11,7 @@ module Course
 
       describe ".call" do
         context "when request is not handle middleware" do
-          it { expect(response).to eq([Statuses::SUCSSESS, {}, ["Hello, World!"]]) }
+          it { expect(response).to eq([Statuses::SUCCESS, {}, ["Hello, World!"]]) }
         end
 
         context "when request is handle middleware" do
@@ -20,7 +20,7 @@ module Course
             File.read(File.join(Course.config.root, "public", "assets", "xml_file.xml"))
           end
 
-          it { expect(response[0]).to eq(Statuses::SUCSSESS) }
+          it { expect(response[0]).to eq(Statuses::SUCCESS) }
           it { expect(response[2].first).to eq(body) }
         end
 

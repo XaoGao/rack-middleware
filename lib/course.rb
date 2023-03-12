@@ -1,7 +1,6 @@
 require "debug"
 require "logger"
 require "dry-configurable"
-require "digest"
 
 require_relative "./course/statuses"
 require_relative "./course/application"

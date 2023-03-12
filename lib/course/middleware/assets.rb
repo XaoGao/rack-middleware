@@ -35,7 +35,7 @@ module Course
 
         if file_exist?(env)
           body = read_file(env)
-          [Statuses::SUCSSESS, headers(env), [body]]
+          [Statuses::SUCCESS, headers(env), [body]]
         else
           [Statuses::NOT_FOUND, {}, [""]]
         end

@@ -1,3 +1,5 @@
+require "digest"
+
 module Course
   module Middleware
     class Etag
@@ -24,7 +26,7 @@ module Course
       private
 
       def success_status?(status)
-        status == Statuses::SUCSSESS
+        status == Statuses::SUCCESS
       end
 
       def cache?(headers)
