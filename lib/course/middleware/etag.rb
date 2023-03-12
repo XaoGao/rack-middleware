@@ -11,8 +11,11 @@ module Course
         status, headers, body = app.call(env)
 
         if success_status?(status) && cache?(headers)
-          hash_body = digest_body(body)
-          headers["etag"] = hash_body
+          digest = digest_body(body)
+          return [Statuses::NOT_MODIFIED, headers, body] if headers["etag"] == digest
+
+          headers["etag"] = digest
+          return [status, headers, body]
         end
 
         [status, headers, body]

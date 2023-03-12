@@ -29,18 +29,20 @@ module Course
           let(:expires) { (Time.now + described_class::MAX_CACHE_AGE).utc.rfc2822 }
 
           it {
-            expect(response).to eq([Statuses::NOT_FOUND,
-                                    {
-                                      "cache-control" => "public, max-age=#{described_class::MAX_CACHE_AGE}",
-                                      "content-type" => "text/plain", "expires" => expires
-                                    }, [""]])
+            expect(response).to eq([Statuses::NOT_FOUND, {}, [""]])
           }
         end
 
         context "when path traversal" do
-          let(:env) { { "REQUEST_METHOD" => "GET", "REQUEST_PATH" => "/public/../../../docker-compose.yml" } }
+          let(:env) do
+            {
+              "CONTENT_TYPE" => "applications/xml",
+              "REQUEST_METHOD" => "GET",
+              "REQUEST_PATH" => "/public/../../../docker-compose.yml"
+            }
+          end
 
-          it { expect(response).to eq([Statuses::NOT_FOUND, { "content-type" => "text/plain" }, [""]]) }
+          it { expect(response).to eq([Statuses::NOT_FOUND, { "content-type" => "applications/xml" }, [""]]) }
         end
       end
     end

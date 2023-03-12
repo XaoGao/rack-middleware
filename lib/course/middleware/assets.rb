@@ -31,22 +31,22 @@ module Course
       end
 
       def handle_public_request(env)
-        if danger_path?(env)
-          return [Statuses::NOT_FOUND, { "content-type" => (env["CONTENT_TYPE"] || "text/plain") }, [""]]
-        end
+        return [Statuses::NOT_FOUND, { "content-type" => (env["CONTENT_TYPE"]) }, [""]] if danger_path?(env)
 
-        body = read_file(env)
-        status = body == "" ? Statuses::NOT_FOUND : Statuses::SUCSSESS
-        [status, headers(env), [body]]
+        if file_exist?(env)
+          body = read_file(env)
+          [Statuses::SUCSSESS, headers(env), [body]]
+        else
+          [Statuses::NOT_FOUND, {}, [""]]
+        end
+      end
+
+      def file_exist?(env)
+        File.file?(full_path(env))
       end
 
       def read_file(env)
-        full_path_to_file = full_path(env)
-        if File.file?(full_path_to_file)
-          File.read(full_path_to_file)
-        else
-          ""
-        end
+        File.read(full_path(env))
       end
 
       def full_path(env)
@@ -59,12 +59,11 @@ module Course
       end
 
       def headers(env)
-        header = {}
-        header["content-type"] = env["CONTENT_TYPE"] || "text/plain"
-        header["cache-control"] = "public, max-age=#{MAX_CACHE_AGE}"
-        header["expires"] = (Time.now + MAX_CACHE_AGE).utc.rfc2822
-
-        header
+        {
+          "content-type" => env["CONTENT_TYPE"],
+          "cache-control" => "public, max-age=#{MAX_CACHE_AGE}",
+          "expires" => (Time.now + MAX_CACHE_AGE).utc.rfc2822
+        }
       end
     end
   end

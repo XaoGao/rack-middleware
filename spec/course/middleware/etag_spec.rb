@@ -20,9 +20,24 @@ module Course
           let(:headers) { { "cache-control" => "public, max-age=31_536_000" } }
           let(:digest) { Digest::MD5.hexdigest("Hello, World!") }
 
-          it "have etag header" do
-            expect(response[1]).to include("etag" => digest)
-          end
+          it { expect(response[1]).to include("etag" => digest) }
+          it { expect(response[0]).to eq(200) }
+        end
+
+        context "when response already have etag header" do
+          let(:headers) { { "cache-control" => "public, max-age=31_536_000", "etag" => digest } }
+          let(:digest) { Digest::MD5.hexdigest("Hello, World!") }
+
+          it { expect(response[1]).to include("etag" => digest) }
+          it { expect(response[0]).to eq(304) }
+        end
+
+        context "when response already have wrong etag header" do
+          let(:headers) { { "cache-control" => "public, max-age=31_536_000", "etag" => "some hex" } }
+          let(:digest) { Digest::MD5.hexdigest("Hello, World!") }
+
+          it { expect(response[1]).to include("etag" => digest) }
+          it { expect(response[0]).to eq(200) }
         end
       end
     end
