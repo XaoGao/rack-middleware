@@ -12,7 +12,7 @@ module Course
 
         if success_status?(status) && cache?(headers)
           digest = digest_body(body)
-          return [Statuses::NOT_MODIFIED, headers, body] if headers["etag"] == digest
+          return [Statuses::NOT_MODIFIED, headers, [""]] if headers["etag"] == digest
 
           headers["etag"] = digest
           return [status, headers, body]
