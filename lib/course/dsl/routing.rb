@@ -10,7 +10,7 @@ module Course
         return self.class.find_post_endpoint(env).call if handle_post_request?(env)
         return self.class.find_rack_app(env).new.call(env) if handle_other_rack_request?(env)
 
-        [404, {}, [""]]
+        [500, {}, [""]]
       end
 
       def handle_get_request?(env)
