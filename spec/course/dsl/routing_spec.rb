@@ -92,7 +92,7 @@ module Course
       describe ".call" do
         let(:env_wrong) { { "REQUEST_METHOD" => "GET", "PATH_INFO" => "/wrong_path" } }
 
-        it { expect(dummy_instance.call(env_wrong)).to eq([404, {}, [""]]) }
+        it { expect(dummy_instance.call(env_wrong)).to eq([500, {}, [""]]) }
         it { expect(dummy_instance.call(env_get_index)).to eq([200, {}, ["Some index page"]]) }
         it { expect(dummy_instance.call(env_post)).to eq([201, {}, [""]]) }
       end

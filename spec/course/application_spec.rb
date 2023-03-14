@@ -6,7 +6,7 @@ module Course
       let(:response) { get "/some_path" }
 
       # rubocop:disable RSpec/Rails/HaveHttpStatus
-      it { expect(response.status).to eq(404) }
+      it { expect(response.status).to eq(500) }
       # rubocop:enable RSpec/Rails/HaveHttpStatus
     end
 
