@@ -25,3 +25,14 @@ Style/Documentation:
 
 RSpec/MultipleMemoizedHelpers:
   Max: 7
+
+Metrics/ModuleLength:
+  Exclude:
+    - "**/*_spec.rb"
+
+Metrics/BlockLength:
+  Exclude:
+    - "**/*_spec.rb"
+
+Metrics/CyclomaticComplexity:
+  Max: 10

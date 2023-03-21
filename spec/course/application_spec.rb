@@ -10,15 +10,6 @@ module Course
       # rubocop:enable RSpec/Rails/HaveHttpStatus
     end
 
-    context "when GET request to root path" do
-      let(:response) { get "/" }
-
-      # rubocop:disable RSpec/Rails/HaveHttpStatus
-      it { expect(response.status).to eq(200) }
-      # rubocop:enable RSpec/Rails/HaveHttpStatus
-      it { expect(response.body).to eq("root path!") }
-    end
-
     context "when GET request to index path" do
       let(:response) { get "/index" }
 

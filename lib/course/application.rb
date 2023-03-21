@@ -3,15 +3,23 @@ module Course
     include DSL::Routing
 
     get "/" do
-      [200, {}, ["root path!"]]
+      status(200)
+      "root path!"
     end
 
     get "/index" do
-      [200, {}, ["Some index page"]]
+      status(200)
+      "Some index page"
+    end
+
+    get "/projects/:id/tasks/:name" do
+      status(200)
+      ""
     end
 
     post "/create" do
-      [201, {}, [""]]
+      status(201)
+      ""
     end
 
     mount "/rack_app", OtherRackApp

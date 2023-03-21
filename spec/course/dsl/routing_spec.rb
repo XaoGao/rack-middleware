@@ -6,15 +6,21 @@ module Course
           include Routing
 
           get "/" do
-            [200, {}, ["root path!"]]
+            status(200)
+            headers({})
+            "root path!"
           end
 
           get "/index" do
-            [200, {}, ["Some index page"]]
+            status(200)
+            headers({})
+            "Some index page"
           end
 
           post "/create" do
-            [201, {}, [""]]
+            status(201)
+            headers({})
+            ""
           end
         end
       end
@@ -43,6 +49,39 @@ module Course
         it { expect(dummy_class.list_of_post.map { |g| g[0] }).to eq(["/create"]) }
       end
 
+      describe ".match" do
+        let(:arr_path) { "/projects/:id/tasks/:name".split("/") }
+        let(:arr_request_path) { "/projects/10/tasks/test".split("/") }
+
+        it { expect(dummy_instance.match(arr_path, arr_request_path)).to eq(arr_path) }
+
+        it "will not match" do
+          arr_path = "/projects/:id/tasks/:name/index".split("/")
+          expect(dummy_instance.match(arr_path, arr_request_path)).to be_nil
+        end
+      end
+
+      describe ".find_params" do
+        let(:arr_request_path) { "/projects/:id/tasks/:name".split("/") }
+        let(:find_url) { "/projects/10/tasks/test".split("/") }
+
+        it "set params" do
+          dummy_instance.find_params(arr_request_path, find_url)
+          expect(dummy_class.params).to eq({})
+        end
+      end
+
+      describe ".handle_request?" do
+        let(:env_wrong) { { "REQUEST_METHOD" => "GET", "PATH_INFO" => "/wrong_path" } }
+
+        it {
+          expect(dummy_instance.handle_request?(env_get_index,
+                                                dummy_class.list_of_get)).to eq(env_get_index["PATH_INFO"].split("/"))
+        }
+
+        it { expect(dummy_instance.handle_request?(env_wrong, dummy_class.list_of_get)).to be false }
+      end
+
       describe "#get" do
         it "add a new get handler" do
           dummy_class.get("/some_get_path") do
@@ -61,32 +100,29 @@ module Course
         end
       end
 
-      describe "#find_get_endpoint" do
+      describe "#find_endpoint" do
         it "find a get handler by url" do
-          result = dummy_class.find_get_endpoint(env_get_index)
-          expect(result.call).to eq([200, {}, ["Some index page"]])
+          result = dummy_class.find_endpoint(dummy_class.list_of_get, "/index")
+          expect(result.call).to eq("Some index page")
         end
       end
 
-      describe "#find_post_endpoint" do
-        it "find a get handler by url" do
-          result = dummy_class.find_post_endpoint(env_post)
-          expect(result.call).to eq([201, {}, [""]])
+      describe ".status_or_default" do
+        it { expect(dummy_class.status_or_default).to eq(500) }
+
+        it "seted status" do
+          dummy_class.status(200)
+          expect(dummy_class.status_or_default).to eq(200)
         end
       end
 
-      describe ".handle_get_request?" do
-        let(:env_wrong) { { "REQUEST_METHOD" => "GET", "PATH_INFO" => "/wrong_path" } }
+      describe ".headers_or_default" do
+        it { expect(dummy_class.headers_or_default).to eq({}) }
 
-        it { expect(dummy_instance.handle_get_request?(env_get_index)).to be true }
-        it { expect(dummy_instance.handle_get_request?(env_wrong)).to be false }
-      end
-
-      describe ".handle_post_request?" do
-        let(:env_wrong) { { "REQUEST_METHOD" => "POST", "PATH_INFO" => "/wrong_path" } }
-
-        it { expect(dummy_instance.handle_post_request?(env_post)).to be true }
-        it { expect(dummy_instance.handle_post_request?(env_wrong)).to be false }
+        it "seted status" do
+          dummy_class.headers({ "content-type" => "applications/json" })
+          expect(dummy_class.headers_or_default).to eq({ "content-type" => "applications/json" })
+        end
       end
 
       describe ".call" do

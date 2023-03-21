@@ -5,24 +5,48 @@ module Course
         base.extend(ClassMethods)
       end
 
+      # rubocop:disable Metrics/AbcSize
       def call(env)
-        return self.class.find_get_endpoint(env).call if handle_get_request?(env)
-        return self.class.find_post_endpoint(env).call if handle_post_request?(env)
+        result = get?(env) && handle_request?(env, self.class.list_of_get)
+        body = self.class.find_endpoint(self.class.list_of_get, result.join("/")).call if result
+        result = post?(env) && handle_request?(env, self.class.list_of_post)
+        body = self.class.find_endpoint(self.class.list_of_post, result.join("/")).call if result
+        return [self.class.status_or_default, self.class.headers_or_default, [body || ""]] unless body.nil?
+
         return self.class.find_rack_app(env).new.call(env) if handle_other_rack_request?(env)
 
         [500, {}, [""]]
       end
+      # rubocop:enable Metrics/AbcSize
 
-      def handle_get_request?(env)
-        return false unless get?(env)
+      def handle_request?(env, list)
+        arr_request_path = env["PATH_INFO"].split("/")
+        list.each do |path|
+          arr_path = path[0].split("/")
+          next if arr_path.size != arr_request_path.size
 
-        self.class.list_of_get.any? { |item| item[0] == env["PATH_INFO"] }
+          find_url = match(arr_path, arr_request_path)
+          next if find_url.nil?
+
+          find_params(arr_request_path, find_url)
+          return find_url
+        end
+        false
       end
 
-      def handle_post_request?(env)
-        return false unless post?(env)
+      def match(arr_path, arr_request_path)
+        arr_path.each_with_index do |_, i|
+          next if arr_path[i].include?(":")
+          return nil if arr_path[i] != arr_request_path[i]
+        end
+        arr_path
+      end
 
-        self.class.list_of_post.any? { |item| item[0] == env["PATH_INFO"] }
+      def find_params(arr_request_path, find_url)
+        self.class.params = {}
+        find_url.each_with_index do |_, i|
+          self.class.params[find_url[i]] = arr_request_path[i] if find_url[i].include?(":")
+        end
       end
 
       def handle_other_rack_request?(env)
@@ -38,12 +62,8 @@ module Course
       end
 
       module ClassMethods
-        def find_get_endpoint(env)
-          list_of_get.find { |item| item[0] == env["PATH_INFO"] }[1]
-        end
-
-        def find_post_endpoint(env)
-          list_of_post.find { |item| item[0] == env["PATH_INFO"] }[1]
+        def find_endpoint(list, url)
+          list.find { |item| item[0] == url }[1]
         end
 
         def find_rack_app(env)
@@ -74,6 +94,30 @@ module Course
 
         def other_rack_app
           @other_rack_app ||= []
+        end
+
+        def params
+          @params ||= {}
+        end
+
+        def params=(value)
+          @params = value
+        end
+
+        def headers(hash)
+          @headers = hash
+        end
+
+        def status(code)
+          @status = code
+        end
+
+        def status_or_default
+          @status || 500
+        end
+
+        def headers_or_default
+          @headers || {}
         end
       end
     end
