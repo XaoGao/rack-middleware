@@ -4,8 +4,10 @@ source "https://rubygems.org"
 
 ruby "3.1.2"
 
+gem "activesupport", "~> 5.0", ">= 5.0.0.1"
 gem "dry-configurable"
 gem "json", "~> 2.3"
+gem "mustermann", "~> 3.0"
 gem "oj", "~> 3.14", ">= 3.14.2"
 gem "puma", "~> 6.1", ">= 6.1.1"
 gem "rack", "~> 3.0", ">= 3.0.4.1"

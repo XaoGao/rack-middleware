@@ -1,6 +1,7 @@
 require "debug"
 require "logger"
 require "dry-configurable"
+require "active_support/inflector"
 
 require_relative "./course/dsl/routing"
 require_relative "./course/statuses"
