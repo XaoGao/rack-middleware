@@ -22,6 +22,8 @@ module Course
       ""
     end
 
+    resources :post, except: [:edit]
+
     mount "/rack_app", OtherRackApp
   end
 end
